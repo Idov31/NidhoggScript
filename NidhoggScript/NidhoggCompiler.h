@@ -11,7 +11,7 @@ constexpr size_t MINIMUM_FILE_SIZE = sizeof(SIGNATURE) + 3;
 constexpr size_t FIRST_COMMAND_OFFSET = sizeof(SIGNATURE) + 1;
 constexpr uint16_t INVALID_COMMAND_TYPE = 0xFF;
 
-class NidhoggAssembler
+class NidhoggCompiler
 {
 private:
 	std::vector<Parser*> parsers;
@@ -54,8 +54,8 @@ private:
 	bool ValidateCommand(std::vector<byte> data, size_t index, DWORD* outOffset);
 
 public:
-	NidhoggAssembler(std::string filePath);
-	~NidhoggAssembler();
+	NidhoggCompiler(std::string filePath);
+	~NidhoggCompiler();
 	bool Assemble(std::string outputPath);
 	bool Validate(std::string assembledFilePath);
 };

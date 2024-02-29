@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "NidhoggAssembler.h"
+#include "NidhoggCompiler.h"
 
-NidhoggAssembler::NidhoggAssembler(std::string filePath) {
+NidhoggCompiler::NidhoggCompiler(std::string filePath) {
 	std::string token;
 
 	if (filePath.empty())
@@ -51,12 +51,12 @@ NidhoggAssembler::NidhoggAssembler(std::string filePath) {
 	};
 }
 
-NidhoggAssembler::~NidhoggAssembler() {
+NidhoggCompiler::~NidhoggCompiler() {
 	for (auto& parser : this->parsersMap)
 		delete parser.second;
 }
 
-bool NidhoggAssembler::Assemble(std::string outputPath) {
+bool NidhoggCompiler::Assemble(std::string outputPath) {
 	std::vector<byte> assembledBytes;
 	std::vector<std::string> args;
 	uint16_t commandType = 0;
@@ -141,7 +141,7 @@ bool NidhoggAssembler::Assemble(std::string outputPath) {
 	return assembled;
 }
 
-bool NidhoggAssembler::Validate(std::string assembledFilePath) {
+bool NidhoggCompiler::Validate(std::string assembledFilePath) {
 	DWORD offset = 0;
 
 	if (assembledFilePath.empty()) {
@@ -187,7 +187,7 @@ bool NidhoggAssembler::Validate(std::string assembledFilePath) {
 	return true;
 }
 
-bool NidhoggAssembler::ValidateCommand(std::vector<byte> data, size_t index, DWORD* outOffset) {
+bool NidhoggCompiler::ValidateCommand(std::vector<byte> data, size_t index, DWORD* outOffset) {
 	uint16_t commandType = data[index];
 
 	if (reverseOpcodeMap.find(commandType) == reverseOpcodeMap.end()) {
@@ -209,7 +209,7 @@ bool NidhoggAssembler::ValidateCommand(std::vector<byte> data, size_t index, DWO
 	return false;
 }
 
-uint16_t NidhoggAssembler::GetCommandType(std::string command) {
+uint16_t NidhoggCompiler::GetCommandType(std::string command) {
 	size_t pos = command.find(" ");
 	std::string commandName = command.substr(0, pos);
 
@@ -219,7 +219,7 @@ uint16_t NidhoggAssembler::GetCommandType(std::string command) {
 	return this->parsersMap[commandName]->GetOpcode();
 }
 
-std::vector<std::string> NidhoggAssembler::GetArgs(std::string command) {
+std::vector<std::string> NidhoggCompiler::GetArgs(std::string command) {
 	bool isString = false;
 	std::string token;
 	std::string strToken;

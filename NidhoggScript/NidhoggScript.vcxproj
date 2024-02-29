@@ -130,7 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="NidhoggAssembler.cpp" />
+    <ClCompile Include="NidhoggCompiler.cpp" />
     <ClCompile Include="NidhoggScript.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="PatchParser.cpp" />
@@ -145,7 +145,7 @@
     <ClInclude Include="EtwtiParser.hpp" />
     <ClInclude Include="FileParser.hpp" />
     <ClInclude Include="ModuleParser.hpp" />
-    <ClInclude Include="NidhoggAssembler.h" />
+    <ClInclude Include="NidhoggCompiler.h" />
     <ClInclude Include="Parser.hpp" />
     <ClInclude Include="Parsers.h" />
     <ClInclude Include="PatchParser.hpp" />

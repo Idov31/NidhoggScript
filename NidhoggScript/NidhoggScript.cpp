@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "NidhoggAssembler.h"
+#include "NidhoggCompiler.h"
 
 int main(int argc, char* argv[]) {
     if (argc != 3 && argc != 2) {
@@ -9,11 +9,11 @@ int main(int argc, char* argv[]) {
     }
 
 	try {
-		NidhoggAssembler assembler(argv[1]);
+		NidhoggCompiler assembler(argv[1]);
 
 		if (argc == 3) {
 			if (assembler.Assemble(argv[2])) {
-				std::cout << "[?] Assembling..." << std::endl;
+				std::cout << "[?] Compiling..." << std::endl;
 				std::stringstream path(argv[2], std::ios_base::app | std::ios_base::out);
 				path << "\\out.ndhg";
 

@@ -8,31 +8,31 @@
 
 NidhoggScript is a project that allows the user to create playbooks and execute a bunch of commands with Nidhogg in one IOCTL. This project has two parts:
 
-- This repository, which is the user mode part contains the user mode "assembler" and checker to create these script files.
+- This repository, which is the user mode part contains the user mode "compiler" and checker to create these script files.
 
 - [Nidhogg](https://github.com/Idov31/Nidhogg) that contains the execution part.
 
-The allowed commands and detailed usage will be documented in a dedicated wiki soon.
+The allowed commands and detailed usage are documented in a dedicated [wiki](https://github.com/Idov31/NidhoggScript/wiki).
 
 ## Basic Usage
 
 Once you compiled the project, you can run it via CLI in two ways:
 
-### Assembling mode
+### Compiling mode
 
-Use this mode to "assemble" your script, give the input file and the output directory which will be created there the `out.ndhg` file.
+Use this mode to "compile" your script, give the input file and the output directory which will be created there the `out.ndhg` file.
 
 ```sh
 # Example input in file.txt:
 # process add 3110
 
-# Run the assembler.
+# Run the compiler.
 NidhoggScript.exe C:\path\to\your\file.txt C:\path\to\folder
 ```
 
 ### Validation mode
 
-Use this mode if you want to validate an edited file. If it is a file that is just generated there is no need to use this mode because "assembling" also validates the output.
+Use this mode if you want to validate an edited file. If it is a file that is just generated there is no need to use this mode because "compiling" also validates the output.
 
 ```sh
 NidhoggScript.exe C:\path\to\your\file.ndhg
