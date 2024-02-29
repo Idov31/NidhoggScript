@@ -3,23 +3,23 @@
 
 int main(int argc, char* argv[]) {
     if (argc != 3 && argc != 2) {
-        std::cerr << "[-] Usage: " << argv[0] << " <input script file> <output assembled file directory>" << std::endl;
-        std::cerr << "[-] Usage: " << argv[0] << " <assembled file>" << std::endl;
+        std::cerr << "[-] Usage: " << argv[0] << " <input script file> <output compiled file directory>" << std::endl;
+        std::cerr << "[-] Usage: " << argv[0] << " <compiled file>" << std::endl;
 		return 1;
     }
 
 	try {
-		NidhoggCompiler assembler(argv[1]);
+		NidhoggCompiler compiler(argv[1]);
 
 		if (argc == 3) {
-			if (assembler.Assemble(argv[2])) {
+			if (compiler.Compile(argv[2])) {
 				std::cout << "[?] Compiling..." << std::endl;
 				std::stringstream path(argv[2], std::ios_base::app | std::ios_base::out);
 				path << "\\out.ndhg";
 
-				std::cout << "[+] Assembled successfully.\n[?] Validating..." << std::endl;
+				std::cout << "[+] Compiled successfully.\n[?] Validating..." << std::endl;
 
-				if (assembler.Validate(path.str()))
+				if (compiler.Validate(path.str()))
 					std::cout << "[+] Output is valid." << std::endl;
 				else {
 					std::cerr << "[-] The output is invalid." << std::endl;
@@ -27,13 +27,13 @@ int main(int argc, char* argv[]) {
 				}
 			}
 			else {
-				std::cerr << "[-] Failed to assemble." << std::endl;
+				std::cerr << "[-] Failed to compile." << std::endl;
 				return 1;
 			}
 		}
 		else {
 			std::cout << "[?] Validating..." << std::endl;
-			if (assembler.Validate(argv[1]))
+			if (compiler.Validate(argv[1]))
 				std::cout << "[+] Input is valid." << std::endl;
 			else {
 				std::cerr << "[-] The input is invalid." << std::endl;

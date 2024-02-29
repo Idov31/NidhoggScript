@@ -56,6 +56,6 @@ private:
 public:
 	NidhoggCompiler(std::string filePath);
 	~NidhoggCompiler();
-	bool Assemble(std::string outputPath);
+	bool Compile(std::string outputPath);
 	bool Validate(std::string assembledFilePath);
 };

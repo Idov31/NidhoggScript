@@ -56,34 +56,34 @@ NidhoggCompiler::~NidhoggCompiler() {
 		delete parser.second;
 }
 
-bool NidhoggCompiler::Assemble(std::string outputPath) {
-	std::vector<byte> assembledBytes;
+bool NidhoggCompiler::Compile(std::string outputPath) {
+	std::vector<byte> compiledBytes;
 	std::vector<std::string> args;
 	uint16_t commandType = 0;
 	DWORD startIndex = 0;
 	bool assembled = true;
-	assembledBytes.insert(assembledBytes.end(), SIGNATURE, SIGNATURE + sizeof(SIGNATURE));
+	compiledBytes.insert(compiledBytes.end(), SIGNATURE, SIGNATURE + sizeof(SIGNATURE));
 
 	// Push the size of the commands.
-	auto PushInt = [&](std::vector<byte>& assembledBytes, size_t size) {
+	auto PushInt = [&](std::vector<byte>& compiledBytes, size_t size) {
 		size_t intToPush = size;
 
 		if (intToPush == 0)
-			assembledBytes.push_back(0);
+			compiledBytes.push_back(0);
 		else {
 			if (intToPush > 0xFF) {
 				while (intToPush != 0) {
-					assembledBytes.push_back(intToPush & 0xFF);
+					compiledBytes.push_back(intToPush & 0xFF);
 					intToPush >>= 8;
 				}
 			}
 			else
-				assembledBytes.push_back(intToPush);
+				compiledBytes.push_back(intToPush);
 		}
 	};
 
 	size_t commandsSize = this->commands.size();
-	PushInt(assembledBytes, commandsSize);
+	PushInt(compiledBytes, commandsSize);
 
 	for (std::string& command : this->commands) {
 		// Push the command.
@@ -94,13 +94,13 @@ bool NidhoggCompiler::Assemble(std::string outputPath) {
 			break;
 		}
 
-		PushInt(assembledBytes, commandType);
+		PushInt(compiledBytes, commandType);
 
 		// Push the args.
 		args = GetArgs(command);
 
 		if (args.size() > 0) {
-			PushInt(assembledBytes, args.size());
+			PushInt(compiledBytes, args.size());
 
 			if ((ParserOpcode)commandType != ParserOpcode::Patch) {
 				std::string option = args[0];
@@ -111,20 +111,20 @@ bool NidhoggCompiler::Assemble(std::string outputPath) {
 				}
 
 				// Pushing the option's opcode.
-				PushInt(assembledBytes, 1);
-				PushInt(assembledBytes, this->options[option]);
+				PushInt(compiledBytes, 1);
+				PushInt(compiledBytes, this->options[option]);
 				startIndex = 1;
 			}
 			
 			// Pushing the rest of the args.
 			for (DWORD i = startIndex; i < args.size(); i++) {
-				PushInt(assembledBytes, args[i].size());
-				assembledBytes.insert(assembledBytes.end(), args[i].begin(), args[i].end());
+				PushInt(compiledBytes, args[i].size());
+				compiledBytes.insert(compiledBytes.end(), args[i].begin(), args[i].end());
 			}
 		}
 		else {
-			assembledBytes.push_back(0);
-			assembledBytes.push_back(0);
+			compiledBytes.push_back(0);
+			compiledBytes.push_back(0);
 		}
 	}
 
@@ -136,7 +136,7 @@ bool NidhoggCompiler::Assemble(std::string outputPath) {
 		std::stringstream path(outputPath, std::ios_base::app | std::ios_base::out);
 		path << "\\out.ndhg";
 		fileStream.open(path.str(), std::ios::out | std::ios::binary);
-		fileStream.write((char*)assembledBytes.data(), assembledBytes.size());
+		fileStream.write((char*)compiledBytes.data(), compiledBytes.size());
 	}
 	return assembled;
 }
